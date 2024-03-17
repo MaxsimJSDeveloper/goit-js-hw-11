@@ -26,11 +26,9 @@ function sendForm(event) {
       fetchPhotoFromPixabay()
         .then(photos => {
           renderPhotos(photos.hits);
-          hideLoader();
         })
         .catch(error => {
           console.log(error);
-          hideLoader();
           iziToast.error({
             message: `Sorry, an error occurred while loading. Please try again!`,
             position: 'topRight',
