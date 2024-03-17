@@ -32,7 +32,6 @@ function sendForm(event) {
           console.log(error);
           hideLoader();
           iziToast.error({
-            title: 'Error',
             message: `Sorry, an error occurred while loading. Please try again!`,
             position: 'topRight',
           });
@@ -42,7 +41,6 @@ function sendForm(event) {
     form.reset();
   } else {
     iziToast.error({
-      title: 'Error',
       message: `Please complete the field!`,
       position: 'topRight',
     });
