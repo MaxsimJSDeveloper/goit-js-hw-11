@@ -6,37 +6,44 @@ import 'izitoast/dist/css/iziToast.min.css';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const form = document.querySelector('.search-form');
-export const inputSearch = form.elements.search;
 export const listOfPhotos = document.querySelector('.gallery');
 export const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
 });
+const preloader = document.querySelector('.loader');
+preloader.style.display = 'none';
+
+export const showLoader = () => {
+  preloader.style.display = 'flex';
+};
+const hideLoader = () => {
+  preloader.style.display = 'none';
+};
 
 form.addEventListener('submit', sendForm);
 
 function sendForm(event) {
   event.preventDefault();
-
   listOfPhotos.innerHTML = '';
 
-  const input = event.target.elements.search.value.trim();
+  const input = form.elements.search.value.trim();
   if (input !== '') {
-    window.onload = () => {
-      fetchPhotoFromPixabay()
-        .then(photos => {
-          renderPhotos(photos.hits);
-        })
-        .catch(error => {
-          console.log(error);
-          iziToast.error({
-            message: `Sorry, an error occurred while loading. Please try again!`,
-            position: 'topRight',
-          });
+    showLoader();
+    fetchPhotoFromPixabay(input)
+      .then(photos => {
+        renderPhotos(photos.hits);
+        hideLoader();
+        form.reset();
+      })
+      .catch(error => {
+        console.error(error);
+        hideLoader();
+        iziToast.error({
+          message: `Sorry, an error occurred while loading. Please try again!`,
+          position: 'topRight',
         });
-    };
-    window.onload();
-    form.reset();
+      });
   } else {
     iziToast.error({
       message: `Please complete the field!`,
