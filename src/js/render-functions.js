@@ -25,6 +25,7 @@ export function renderPhotos(arr) {
             </li>`;
       })
       .join('');
+
     listOfPhotos.insertAdjacentHTML('beforeend', markup);
 
     lightbox.refresh();
